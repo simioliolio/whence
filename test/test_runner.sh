@@ -13,4 +13,8 @@ if [ -z "$(which busted)" ]; then
 fi
 
 cd "${PROJECT_ROOT}" || { echo "${PROJECT_ROOT} not found"; exit 1; }
+
+# Set LUA_PATH to include project root for module resolution
+export LUA_PATH="./?.lua;./?/init.lua;./?/?.lua;$LUA_PATH"
+
 busted .
