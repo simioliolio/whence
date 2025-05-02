@@ -43,5 +43,11 @@ describe("Sequencer", function()
     assert(CompHelper.simple_arrays_are_equal(notes, {60, 64, 67}), "got " .. table.concat(notes))
   end)
 
+  it("should reset position", function()
+    local sequencer = Sequencer.new()
+    sequencer:advance()
+    sequencer:reset()
+    assert(sequencer.position == 0)
+  end)
 
 end)

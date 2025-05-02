@@ -19,6 +19,10 @@ function Sequencer.new()
     return self.notes[self.position]
   end
 
+  function self:reset()
+    self.position = 0
+  end
+
   return self
 end
 
