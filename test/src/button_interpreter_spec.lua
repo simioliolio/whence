@@ -29,7 +29,7 @@ describe("ButtonInterpreter", function()
     local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Initial state
-    assert(button_interpreter.play_stop_toggled == nil, "Initial state should be false")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Initial state should be false")
 
     -- Press page button
     button_interpreter:handle_press({0,7,1})
@@ -37,7 +37,7 @@ describe("ButtonInterpreter", function()
 
     -- Press transport button
     button_interpreter:handle_press({0,6,1})
-    assert(button_interpreter.play_stop_toggled == true, "Transport should be toggled")
+    assert(button_interpreter.play_stop_toggled_event == true, "Transport should be toggled")
   end)
 
   it("should interpret row 6 as transport when page buttons held", function()
@@ -46,7 +46,7 @@ describe("ButtonInterpreter", function()
     -- A slightly more complex test involving when the page button is released
 
     -- Initial state
-    assert(button_interpreter.play_stop_toggled == nil, "Initial state should be false")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Initial state should be false")
 
     -- Press page button
     button_interpreter:handle_press({0,7,1})
@@ -58,7 +58,7 @@ describe("ButtonInterpreter", function()
 
     -- Press transport button
     button_interpreter:handle_press({0,6,1})
-    assert(button_interpreter.play_stop_toggled == true, "Transport should be toggled")
+    assert(button_interpreter.play_stop_toggled_event == true, "Transport should be toggled")
 
     -- Release page button 0
     button_interpreter:handle_press({1,7,0})
@@ -69,12 +69,12 @@ describe("ButtonInterpreter", function()
     local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Initial state
-    assert(button_interpreter.play_stop_toggled == nil, "Initial state should be false")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Initial state should be false")
 
     button_interpreter:handle_press({0,6,1})
-    assert(button_interpreter.play_stop_toggled == nil, "Transport should not be toggled as we are not holding a page button")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Transport should not be toggled as we are not holding a page button")
     button_interpreter:handle_press({0,6,0})
-    assert(button_interpreter.play_stop_toggled == nil, "Transport should not be toggled as we are not holding a page button")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Transport should not be toggled as we are not holding a page button")
   end)
 
   it("should not play when column 1 button is pressed when page button is held", function()
@@ -85,7 +85,7 @@ describe("ButtonInterpreter", function()
 
     -- Press column 1 button
     button_interpreter:handle_press({0,1,1})
-    assert(button_interpreter.play_stop_toggled == nil, "Transport should not be toggled as we are not pressing the transport button")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Transport should not be toggled as we are not pressing the transport button")
   end)
 
   it("should not report play_stop_toggled between on_change models", function()
@@ -96,11 +96,11 @@ describe("ButtonInterpreter", function()
 
     -- Press transport button
     button_interpreter:handle_press({0,6,1})
-    assert(button_interpreter.play_stop_toggled == true, "Transport should be toggled")
+    assert(button_interpreter.play_stop_toggled_event == true, "Transport should be toggled")
 
     -- Release page button
     button_interpreter:handle_press({0,7,0})
-    assert(button_interpreter.play_stop_toggled == nil, "Transport was not toggled as we have just released the page button")
+    assert(button_interpreter.play_stop_toggled_event == nil, "Transport was not toggled as we have just released the page button")
   end)
 
   it("should report grid-note intended for a certain sequencer position", function()
@@ -111,24 +111,24 @@ describe("ButtonInterpreter", function()
 
     -- Press grid-notes for sequencer position 0
     button_interpreter:handle_press({2,0,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,0}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,0}),
            "Grid-note should be {2,0}")
     button_interpreter:handle_press({2,1,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,1}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,1}),
            "Grid-note should be {2,1}")
     button_interpreter:handle_press({2,2,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,2}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,2}),
            "Grid-note should be {2,2}")
     button_interpreter:handle_press({2,3,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,3}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,3}),
            "Grid-note should be {2,3}")
     button_interpreter:handle_press({2,4,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,4}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,4}),
            "Grid-note should be {2,4}")
 
     -- Release grid-note
-    button_interpreter:handle_press({3,4,0})
-    assert(captured_model.grid_note_toggle == nil, "Grid-note should now be nil")
+    button_interpreter:handle_press({2,4,0})
+    assert(captured_model.grid_note_toggle_event == nil, "Grid-note should now be nil")
   end)
 
   it("should not repeat grid-note between on_change models", function()
@@ -139,9 +139,9 @@ describe("ButtonInterpreter", function()
 
     -- Press grid-notes for sequencer position 0
     button_interpreter:handle_press({2,0,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,0}), 
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,0}),
            "Grid-note should be {2,0}")
     button_interpreter:handle_press({0,5,0})
-    assert(captured_model.grid_note_toggle == nil, "Grid-note should be nil")
+    assert(captured_model.grid_note_toggle_event == nil, "Grid-note should be nil")
   end)
 end)
