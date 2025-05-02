@@ -53,8 +53,8 @@ function ButtonInterpreter.new()
       end
     end
 
-    -- Grid notes (y = 1)
-    if y == 1 and self.held_sequencer_position ~= nil then
+    -- Grid notes (y = 1-4)
+    if y >= 0 and y <= 4 and self.held_sequencer_position ~= nil then
       if state == 1 then  -- Button press
         self.grid_note_toggle = {x, y}
       else  -- Button release

@@ -94,15 +94,25 @@ describe("ButtonInterpreter", function()
     -- Press and hold sequencer position 0
     button_interpreter:handle_press({0,5,1})
 
-    -- Press grid-note for sequencer position 0
+    -- Press grid-notes for sequencer position 0
+    button_interpreter:handle_press({2,0,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,0}), 
+           "Grid-note should be {2,0}")
     button_interpreter:handle_press({2,1,1})
-
-    -- Verify the grid-note is reported for sequencer position 0
     assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,1}), 
            "Grid-note should be {2,1}")
+    button_interpreter:handle_press({2,2,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,2}), 
+           "Grid-note should be {2,2}")
+    button_interpreter:handle_press({2,3,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,3}), 
+           "Grid-note should be {2,3}")
+    button_interpreter:handle_press({2,4,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,4}), 
+           "Grid-note should be {2,4}")
 
     -- Release grid-note
-    button_interpreter:handle_press({2,1,0})
+    button_interpreter:handle_press({3,4,0})
     assert(captured_model.grid_note_toggle == nil, "Grid-note should now be nil")
   end)
 
