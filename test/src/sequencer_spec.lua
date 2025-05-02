@@ -50,4 +50,15 @@ describe("Sequencer", function()
     assert(sequencer.position == 0)
   end)
 
+  it("should inform listeners that the sequencer advanced", function()
+    local sequencer = Sequencer.new()
+    local advanceCount = 0
+    local advance = function()
+      advanceCount = advanceCount + 1
+    end
+    sequencer.listeners.on_advance = advance
+    sequencer:advance()
+    assert(advanceCount == 1)
+  end)
+
 end)
