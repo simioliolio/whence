@@ -12,7 +12,6 @@ describe("LedProvider", function()
     event_model.sequencer_page = 1
     local on_leds = led_provider:on_leds_for_event_model(event_model)
 
-    -- show leds on 16x8 grid as a multiline string without spaces
     local expected_leds = [[
 . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . .
