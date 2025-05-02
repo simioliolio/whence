@@ -2,6 +2,13 @@ local EventModel = require "event_model"
 
 local ButtonInterpreter = {}
 
+ButtonInterpreter.GRID_SIZE = {
+  X = 16,
+  Y = 8
+}
+
+ButtonInterpreter.MAX_BRIGHTNESS = 15
+
 function ButtonInterpreter.new()
   local self = {
     event_model = EventModel.new(),
@@ -40,7 +47,7 @@ function ButtonInterpreter.new()
       end
     -- Sequencer position rows (y = 5 or 6)
     elseif (y == 5 or y == 6) then
-      local sequencer_position = x + (y == 6 and 16 or 0)  -- Map to 0-31 range
+      local sequencer_position = x + (y == 6 and ButtonInterpreter.GRID_SIZE.X or 0)  -- Map to full sequencer range
 
       if state == 1 then  -- Button press
         -- Track sequencer position when no page button is held
