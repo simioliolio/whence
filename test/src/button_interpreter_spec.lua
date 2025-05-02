@@ -126,6 +126,10 @@ describe("ButtonInterpreter", function()
     assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle_event, {2,4}),
            "Grid-note should be {2,4}")
 
+    -- There should be no play events after grid_note_toggle_event as grid_note_toggle_events are for putting notes
+    -- in the sequencer, not playing them
+    assert(captured_model.grid_note_play_event == nil, "There should be no play events after grid_note_toggle_event as grid_note_toggle_events are for putting notes in the sequencer, not playing them")
+
     -- Release grid-note
     button_interpreter:handle_press({2,4,0})
     assert(captured_model.grid_note_toggle_event == nil, "Grid-note should now be nil")
@@ -143,5 +147,18 @@ describe("ButtonInterpreter", function()
            "Grid-note should be {2,0}")
     button_interpreter:handle_press({0,5,0})
     assert(captured_model.grid_note_toggle_event == nil, "Grid-note should be nil")
+  end)
+
+  it("should forward grid-note events", function()
+    local button_interpreter, captured_model = setup_button_interpreter()
+
+    button_interpreter:handle_press({2,2,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_play_event, {2,2,1}),
+           "Grid-note play event should be {2,2,1}")
+    assert(captured_model.grid_note_toggle_event == nil, "Grid-note toggle event should be nil")
+    button_interpreter:handle_press({2,2,0})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_play_event, {2,2,0}),
+           "Grid-note play event should be {2,2,0}")
+    assert(captured_model.grid_note_toggle_event == nil, "Grid-note toggle event should be nil")
   end)
 end)
