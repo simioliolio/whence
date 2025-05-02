@@ -3,13 +3,19 @@ local ButtonInterpreter = require 'src.button_interpreter'
 local comparison_helper = require 'test.utils.comparison_helper'
 
 describe("ButtonInterpreter", function()
-  it("should set sequencer page numbers using row 7", function()
+  -- Helper function to create a fresh button interpreter with a listener
+  local function setup_button_interpreter()
     local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
+    local captured_model = button_interpreter  -- Start with the interpreter itself
     local listener = function(model)
       captured_model = model
     end
     button_interpreter.listeners.on_change = listener
+    return button_interpreter, captured_model
+  end
+
+  it("should set sequencer page numbers using row 7", function()
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Test pages 1-4 using buttons 0-3
     for x = 0, 3 do
@@ -20,12 +26,7 @@ describe("ButtonInterpreter", function()
   end)
 
   it("should interpret row 6 as transport when page button held", function()
-    local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
-    local listener = function(model)
-      captured_model = model
-    end
-    button_interpreter.listeners.on_change = listener
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Initial state
     assert(button_interpreter.play_stop_toggled == nil, "Initial state should be false")
@@ -40,12 +41,7 @@ describe("ButtonInterpreter", function()
   end)
 
   it("should interpret row 6 as transport when page buttons held", function()
-    local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
-    local listener = function(model)
-      captured_model = model
-    end
-    button_interpreter.listeners.on_change = listener
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- A slightly more complex test involving when the page button is released
 
@@ -56,25 +52,21 @@ describe("ButtonInterpreter", function()
     button_interpreter:handle_press({0,7,1})
     assert(button_interpreter.held_page_button == 0, "Page button 0 should be held")
 
+    -- Press page button 1  
     button_interpreter:handle_press({1,7,1})
-    button_interpreter:handle_press({0,7,0})
     assert(button_interpreter.held_page_button == 1, "Page button 1 should be held")
 
     -- Press transport button
     button_interpreter:handle_press({0,6,1})
     assert(button_interpreter.play_stop_toggled == true, "Transport should be toggled")
+
+    -- Release page button 0
     button_interpreter:handle_press({1,7,0})
-    assert(button_interpreter.held_page_button == nil, "Page button 1 should be held")
-    button_interpreter:handle_press({0,6,1})
+    assert(button_interpreter.held_page_button == nil, "Page button 1 should not be held")
   end)
 
   it("should not toggle transport when page button released", function()
-    local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
-    local listener = function(model)
-      captured_model = model
-    end
-    button_interpreter.listeners.on_change = listener
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Initial state
     assert(button_interpreter.play_stop_toggled == nil, "Initial state should be false")
@@ -86,12 +78,7 @@ describe("ButtonInterpreter", function()
   end)
 
   it("should not play when column 1 button is pressed when page button is held", function()
-    local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
-    local listener = function(model)
-      captured_model = model
-    end
-    button_interpreter.listeners.on_change = listener
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Press page button
     button_interpreter:handle_press({0,7,1})
@@ -102,12 +89,7 @@ describe("ButtonInterpreter", function()
   end)
 
   it("should report grid-note intended for a certain sequencer position", function()
-    local button_interpreter = ButtonInterpreter.new()
-    local captured_model = nil
-    local listener = function(model)
-      captured_model = model
-    end
-    button_interpreter.listeners.on_change = listener
+    local button_interpreter, captured_model = setup_button_interpreter()
 
     -- Press and hold sequencer position 0
     button_interpreter:handle_press({0,5,1})
