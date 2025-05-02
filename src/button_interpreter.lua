@@ -13,25 +13,27 @@ function ButtonInterpreter.new()
   function self:handle_press(button_data)
     local x, y, state = table.unpack(button_data)
     
-    if state == 1 then  -- Button press
-      if y == 7 then  -- Page selection row
+    -- Page selection row (y = 7)
+    if y == 7 then
+      if state == 1 then  -- Button press
         self.held_page_button = x
         self.sequencer_page = x + 1
         if self.listeners.on_change then
           self.listeners.on_change(self)
         end
-      elseif y == 6 and self.held_page_button ~= nil then  -- Transport row with page button held
-        self.play_stop_toggled = not self.play_stop_toggled
-        if self.listeners.on_change then
-          self.listeners.on_change(self)
-        end
-      end
-    else  -- Button release
-      if y == 7 then  -- Page button released
+      else  -- Button release
         -- Only clear held_page_button if this was the currently held button
         if self.held_page_button == x then
           self.held_page_button = nil
         end
+      end
+    end
+
+    -- Transport row (y = 6) when page button is held
+    if y == 6 and state == 1 and self.held_page_button ~= nil then
+      self.play_stop_toggled = not self.play_stop_toggled
+      if self.listeners.on_change then
+        self.listeners.on_change(self)
       end
     end
   end
