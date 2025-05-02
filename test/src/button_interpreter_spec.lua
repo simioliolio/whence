@@ -88,6 +88,21 @@ describe("ButtonInterpreter", function()
     assert(button_interpreter.play_stop_toggled == nil, "Transport should not be toggled as we are not pressing the transport button")
   end)
 
+  it("should not report play_stop_toggled between on_change models", function()
+    local button_interpreter, captured_model = setup_button_interpreter()
+
+    -- Press page button
+    button_interpreter:handle_press({0,7,1})
+
+    -- Press transport button
+    button_interpreter:handle_press({0,6,1})
+    assert(button_interpreter.play_stop_toggled == true, "Transport should be toggled")
+
+    -- Release page button
+    button_interpreter:handle_press({0,7,0})
+    assert(button_interpreter.play_stop_toggled == nil, "Transport was not toggled as we have just released the page button")
+  end)
+
   it("should report grid-note intended for a certain sequencer position", function()
     local button_interpreter, captured_model = setup_button_interpreter()
 
@@ -116,4 +131,17 @@ describe("ButtonInterpreter", function()
     assert(captured_model.grid_note_toggle == nil, "Grid-note should now be nil")
   end)
 
+  it("should not repeat grid-note between on_change models", function()
+    local button_interpreter, captured_model = setup_button_interpreter()
+
+    -- Press and hold sequencer position 0
+    button_interpreter:handle_press({0,5,1})
+
+    -- Press grid-notes for sequencer position 0
+    button_interpreter:handle_press({2,0,1})
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,0}), 
+           "Grid-note should be {2,0}")
+    button_interpreter:handle_press({0,5,0})
+    assert(captured_model.grid_note_toggle == nil, "Grid-note should be nil")
+  end)
 end)
