@@ -1,5 +1,6 @@
 require 'busted'
 local ButtonInterpreter = require 'src.button_interpreter'
+local comparison_helper = require 'test.utils.comparison_helper'
 
 describe("ButtonInterpreter", function()
   it("should set sequencer page numbers using row 7", function()
@@ -98,6 +99,29 @@ describe("ButtonInterpreter", function()
     -- Press column 1 button
     button_interpreter:handle_press({0,1,1})
     assert(button_interpreter.play_stop_toggled == nil, "Transport should not be toggled as we are not pressing the transport button")
+  end)
+
+  it("should report grid-note intended for a certain sequencer position", function()
+    local button_interpreter = ButtonInterpreter.new()
+    local captured_model = nil
+    local listener = function(model)
+      captured_model = model
+    end
+    button_interpreter.listeners.on_change = listener
+
+    -- Press and hold sequencer position 0
+    button_interpreter:handle_press({0,5,1})
+
+    -- Press grid-note for sequencer position 0
+    button_interpreter:handle_press({2,1,1})
+
+    -- Verify the grid-note is reported for sequencer position 0
+    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_toggle, {2,1}), 
+           "Grid-note should be {2,1}")
+
+    -- Release grid-note
+    button_interpreter:handle_press({2,1,0})
+    assert(captured_model.grid_note_toggle == nil, "Grid-note should now be nil")
   end)
 
 end)
