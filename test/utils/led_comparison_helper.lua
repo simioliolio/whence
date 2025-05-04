@@ -1,3 +1,13 @@
+-- Helper function to check if a table contains a specific LED coordinate
+local function table_contains_led(t, x, y)
+  for _, led in ipairs(t) do
+    if led[1] == x and led[2] == y then
+      return true
+    end
+  end
+  return false
+end
+
 local LedComparisonHelper = {}
 
 -- Convert a multiline ASCII grid to an array of on LED coordinates
@@ -26,17 +36,17 @@ function LedComparisonHelper.grid_to_on_leds(grid)
 end
 
 -- Compare two arrays of LED coordinates
--- Returns true if both arrays contain the same coordinates in the same order
+-- Returns true if both arrays contain the same coordinates (order doesn't matter)
 function LedComparisonHelper.compare_led_arrays(expected, actual)
   if #expected ~= #actual then
     return false, string.format("Expected %d LEDs but got %d", #expected, #actual)
   end
 
-  for i, expected_led in ipairs(expected) do
-    local actual_led = actual[i]
-    if actual_led[1] ~= expected_led[1] or actual_led[2] ~= expected_led[2] then
-      return false, string.format("LED %d mismatch: expected {%d,%d} but got {%d,%d}",
-                                i, expected_led[1], expected_led[2], actual_led[1], actual_led[2])
+  -- Check if each expected LED exists in actual
+  for _, expected_led in ipairs(expected) do
+    if not table_contains_led(actual, expected_led[1], expected_led[2]) then
+      return false, string.format("LED {%d,%d} not found in actual LEDs",
+                                expected_led[1], expected_led[2])
     end
   end
 
