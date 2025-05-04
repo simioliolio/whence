@@ -1,4 +1,4 @@
-local EventModel = require "event_model"
+local ButtonEvent = require "button_event"
 
 local ButtonInterpreter = {}
 
@@ -11,7 +11,7 @@ ButtonInterpreter.MAX_BRIGHTNESS = 15
 
 function ButtonInterpreter.new()
   local self = {
-    event_model = EventModel.new(),
+    event_model = ButtonEvent.new(),
     
     -- set this to receive updates when the state changes
     listeners = {
