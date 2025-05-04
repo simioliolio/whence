@@ -23,19 +23,19 @@ function ButtonInterpreter.new()
     local x, y, state = table.unpack(button_data)
 
     -- Grid notes (y = 0-4)
-    self.grid_note_sequencer_event = nil
-    self.grid_note_play_event = nil
+    self.grid_note_into_sequencer_event = nil
+    self.grid_note_to_play_event = nil
     if y >= 0 and y <= 4 then
       if self.held_sequencer_position ~= nil then
         -- Handle grid notes for sequencer positions
         if state == 1 then  -- Button press
-          self.grid_note_sequencer_event = {x, y}
+          self.grid_note_into_sequencer_event = {x, y}
         else  -- Button release
-          self.grid_note_sequencer_event = nil
+          self.grid_note_into_sequencer_event = nil
         end
       else
         -- Forward raw grid note events when not handling sequencer positions
-        self.grid_note_play_event = {x, y, state}
+        self.grid_note_to_play_event = {x, y, state}
       end
     end
 
