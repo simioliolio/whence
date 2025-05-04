@@ -9,6 +9,11 @@ function EventReducer.new()
     if event_model.play_stop_toggled_event then
       state.is_playing = not state.is_playing
     end
+    if event_model.held_page_button then
+      state.showing_transport_row = true
+    else
+      state.showing_transport_row = false
+    end
     return state
   end
 
