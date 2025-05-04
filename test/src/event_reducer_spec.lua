@@ -13,13 +13,13 @@ describe("EventReducer", function()
     assert.are.equal(1, new_state.selected_page)
   end)
 
-  it("should update the is_playing state", function()
+  it("should update the play_requested state", function()
     local event_reducer = EventReducer.new()
     local event_model = ButtonEvent.new()
     event_model.play_stop_toggled_event = true
     local state = State.new()
     local new_state = event_reducer:reduce(event_model, state)
-    assert.are.equal(true, new_state.is_playing)
+    assert.are.equal(true, new_state.play_requested)
   end)
 
   it("should update the showing_transport_row state", function()

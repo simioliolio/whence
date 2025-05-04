@@ -7,7 +7,7 @@ function EventReducer.new()
   function self:reduce(event_model, state)
     state.selected_page = event_model.sequencer_page
     if event_model.play_stop_toggled_event then
-      state.is_playing = not state.is_playing
+      state.play_requested = not state.play_requested
     end
     if event_model.held_page_button then
       state.showing_transport_row = true
