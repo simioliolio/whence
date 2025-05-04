@@ -8,7 +8,7 @@ function EventModel.new()
       grid_note_play_event = nil,  -- Forward raw grid note events
       
       -- state which needs to persist between presses
-      sequencer_page = 0,
+      sequencer_page = 1,
       held_page_button = nil,  -- Track which page button is being held
       held_sequencer_position = nil,  -- Track which sequencer position is being held (0-31)
     }
