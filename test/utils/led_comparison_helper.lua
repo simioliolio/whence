@@ -8,8 +8,8 @@ local LedComparisonHelper = {}
 --   There should be 8 rows (for 8 rows of LEDs)
 -- Returns an array of {x,y} coordinates for each on LED
 function LedComparisonHelper.grid_to_on_leds(grid)
-  local grid_stripped = grid:gsub(" ", "")
-  grid_stripped = grid_stripped:gsub("\n", "")
+  -- Extract just the dots and asterisks, ignoring all other characters
+  local grid_stripped = grid:gsub("[^.*]", "")
 
   local on_leds = {}
   for y = 0, 7 do

@@ -13,14 +13,14 @@ describe("LedProvider", function()
     local on_leds = led_provider:on_leds_for_event_model(event_model)
 
     local expected_leds = [[
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-* . . . . . . . . . . . . . . .]]
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      * . . . . . . . . . . . . . . .]]
 
     local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
     local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
@@ -30,14 +30,14 @@ describe("LedProvider", function()
     local on_leds = led_provider:on_leds_for_event_model(event_model)
 
     local expected_leds = [[
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . .
-. * . . . . . . . . . . . . . .]]
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . . . . . . . . . . . . . . . .
+      . * . . . . . . . . . . . . . .]]
 
     local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
     local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
