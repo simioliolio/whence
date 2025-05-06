@@ -2,6 +2,9 @@ local ButtonEvent = {}
 
 function ButtonEvent.new()
     local self = {
+
+      -- TODO: Try not to duplicate this state in State
+
       -- event-like state. usually nil next on_change
       play_stop_toggled_event = nil,  -- Start as nil
       grid_note_into_sequencer_event = nil,  -- Track the current grid note being toggled

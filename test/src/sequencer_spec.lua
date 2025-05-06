@@ -1,6 +1,5 @@
 require 'busted'
 local Sequencer = require 'src.sequencer'
-local CompHelper = require 'test.utils.comparison_helper'
 
 describe("Sequencer", function()
   it("should increase position when clocked", function()
@@ -40,7 +39,7 @@ describe("Sequencer", function()
     assert(notes == nil)
     sequencer:advance()
     notes = sequencer:notes_for_current_position()
-    assert(CompHelper.simple_arrays_are_equal(notes, {60, 64, 67}), "got " .. table.concat(notes))
+    assert.are.same({60, 64, 67}, notes)
   end)
 
   it("should reset position", function()

@@ -1,6 +1,5 @@
 require 'busted'
 local ButtonInterpreter = require 'src.button_interpreter'
-local comparison_helper = require 'test.utils.comparison_helper'
 
 describe("ButtonInterpreter", function()
   -- Helper function to create a fresh button interpreter with a listener
@@ -20,8 +19,7 @@ describe("ButtonInterpreter", function()
     -- Test pages 1-4 using buttons 0-3
     for x = 0, 3 do
       button_interpreter:handle_press({x,7,1})  -- Only test button press (state = 1)
-      assert(captured_model.sequencer_page == x + 1, 
-             string.format("Expected page %d when pressing button %d", x + 1, x))
+      assert.are.same(x + 1, captured_model.sequencer_page)
     end
   end)
 
@@ -111,20 +109,15 @@ describe("ButtonInterpreter", function()
 
     -- Press grid-notes for sequencer position 0
     button_interpreter:handle_press({2,0,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,0}),
-           "Grid-note should be {2,0}")
+    assert.are.same({2,0}, captured_model.grid_note_into_sequencer_event)
     button_interpreter:handle_press({2,1,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,1}),
-           "Grid-note should be {2,1}")
+    assert.are.same({2,1}, captured_model.grid_note_into_sequencer_event)
     button_interpreter:handle_press({2,2,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,2}),
-           "Grid-note should be {2,2}")
+    assert.are.same({2,2}, captured_model.grid_note_into_sequencer_event)
     button_interpreter:handle_press({2,3,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,3}),
-           "Grid-note should be {2,3}")
+    assert.are.same({2,3}, captured_model.grid_note_into_sequencer_event)
     button_interpreter:handle_press({2,4,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,4}),
-           "Grid-note should be {2,4}")
+    assert.are.same({2,4}, captured_model.grid_note_into_sequencer_event)
 
     -- There should be no play events after grid_note_into_sequencer_event as grid_note_into_sequencer_events are for putting notes
     -- in the sequencer, not playing them
@@ -143,8 +136,7 @@ describe("ButtonInterpreter", function()
 
     -- Press grid-notes for sequencer position 0
     button_interpreter:handle_press({2,0,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_into_sequencer_event, {2,0}),
-           "Grid-note should be {2,0}")
+    assert.are.same({2,0}, captured_model.grid_note_into_sequencer_event)
     button_interpreter:handle_press({0,5,0})
     assert(captured_model.grid_note_into_sequencer_event == nil, "Grid-note should be nil")
   end)
@@ -153,12 +145,10 @@ describe("ButtonInterpreter", function()
     local button_interpreter, captured_model = setup_button_interpreter()
 
     button_interpreter:handle_press({2,2,1})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_to_play_event, {2,2,1}),
-           "Grid-note play event should be {2,2,1}")
+    assert.are.same({2,2,1}, captured_model.grid_note_to_play_event)
     assert(captured_model.grid_note_into_sequencer_event == nil, "Grid-note toggle event should be nil")
     button_interpreter:handle_press({2,2,0})
-    assert(comparison_helper.simple_arrays_are_equal(captured_model.grid_note_to_play_event, {2,2,0}),
-           "Grid-note play event should be {2,2,0}")
+    assert.are.same({2,2,0}, captured_model.grid_note_to_play_event)
     assert(captured_model.grid_note_into_sequencer_event == nil, "Grid-note toggle event should be nil")
   end)
 end)

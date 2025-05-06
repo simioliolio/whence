@@ -1,9 +1,18 @@
 require 'busted'
 local LedProvider = require 'src.led_provider'
 local State = require 'src.state'
-local comparison_helper = require 'test.utils.comparison_helper'
 local LedComparisonHelper = require 'test.utils.led_comparison_helper'
 local ButtonInterpreter = require 'src.button_interpreter'
+
+-- Helper function to check if a specific LED coordinate exists in the array
+local function has_led(leds, x, y)
+  for _, led in ipairs(leds) do
+    if led[1] == x and led[2] == y then
+      return true
+    end
+  end
+  return false
+end
 
 describe("LedProvider", function()
   it("should require state", function()
@@ -19,36 +28,14 @@ describe("LedProvider", function()
     state.sequencer_page = 1
     local on_leds = led_provider:leds(state)
 
-    local expected_leds = [[
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      * . . . . . . . . . . . . . . .]]
-
-    local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
-    local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
-    assert(success, error_message)
+    assert.is_true(has_led(on_leds, 0, 7))
+    assert.equals(1, #on_leds)
 
     state.sequencer_page = 2
-    local on_leds = led_provider:leds(state)
+    on_leds = led_provider:leds(state)
 
-    local expected_leds = [[
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . * . . . . . . . . . . . . . .]]
-
-    local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
-    local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
-    assert(success, error_message)
+    assert.is_true(has_led(on_leds, 1, 7))
+    assert.equals(1, #on_leds)
   end)
 
   it("should show playback status when page button is held", function()
@@ -59,36 +46,16 @@ describe("LedProvider", function()
     state.is_playing = true
     local on_leds = led_provider:leds(state)
 
-    local expected_leds = [[
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      * . . . . . . . . . . . . . . .
-      * . . . . . . . . . . . . . . .]]
-
-    local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
-    local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
-    assert(success, error_message)
+    -- Should have both the page indicator and transport LEDs
+    assert.is_true(has_led(on_leds, 0, 7))
+    assert.is_true(has_led(on_leds, 0, 6))
+    assert.equals(2, #on_leds)
 
     state.is_playing = false
-    local on_leds = led_provider:leds(state)
+    on_leds = led_provider:leds(state)
 
-    local expected_leds = [[
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      . . . . . . . . . . . . . . . .
-      * . . . . . . . . . . . . . . .]]
-
-    local expected_on_leds = LedComparisonHelper.grid_to_on_leds(expected_leds)
-    local success, error_message = LedComparisonHelper.compare_led_arrays(expected_on_leds, on_leds)
-    assert(success, error_message)
-
+    -- Should only have the page indicator LED
+    assert.is_true(has_led(on_leds, 0, 7))
+    assert.equals(1, #on_leds)
   end)
 end)
