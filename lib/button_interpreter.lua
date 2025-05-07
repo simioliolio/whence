@@ -18,9 +18,7 @@ function ButtonInterpreter.new()
     }
   }
 
-  function self:handle_press(button_data)
-    local x, y, state = table.unpack(button_data)
-
+  function self:handle_press(x, y, state)
     -- Grid notes (y = 0-4)
     self.grid_note_into_sequencer_event = nil
     self.grid_note_to_play_event = nil

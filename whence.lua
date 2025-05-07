@@ -18,9 +18,6 @@ function Coordinator.new()
     led_set = function (_,_,_) assert(false, "not set") end,
     led_refresh = function() assert(false, "not set") end,
 
-    -- get externally
-    grid_button_handler = function (x,y,z) self:handle_button(x,y,z) end,
-
     button_interpreter = ButtonInterpreter.new(),
     event_reducer = EventReducer.new(),
     state_modifier = StateModifier.new(State.new()),
@@ -36,10 +33,6 @@ function Coordinator.new()
     end
   end
 
-  function self:handle_button(x,y,z)
-    self.button_interpreter:handle_press({x,y,z})
-  end
-
   return self
 end
 
@@ -47,7 +40,7 @@ end
 function init()
   local coordinator = Coordinator.new()
   g = grid.connect()
-  g.key = coordinator.grid_button_handler
+  g.key = function(x,y,z) coordinator.button_interpreter:handle_press(x,y,z) end
   coordinator.led_set = g.led
   coordinator.led_refresh = g.refresh
   coordinator:start()
