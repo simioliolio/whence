@@ -1,9 +1,9 @@
 require 'busted'
-local StateManager = require 'whence.lib.state_manager'
+local StateModifier = require 'whence.lib.state_modifier'
 local State = require 'whence.lib.state'
 local ButtonEvent = require 'whence.lib.button_event'
 
-describe("StateManager", function()
+describe("StateModifier", function()
   it("should update state and notify listeners", function()
     -- Create a simple reducer that just sets a value
     local reducer = {
@@ -14,15 +14,15 @@ describe("StateManager", function()
     }
 
     local initial_state = State.new()
-    local state_manager = StateManager.new(initial_state)
+    local state_modifier = StateModifier.new(initial_state)
 
     local captured_state = nil
-    state_manager.listeners.on_state_change = function(new_state)
+    state_modifier.listeners.on_state_change = function(new_state)
       captured_state = new_state
     end
 
     local event = {value = 42}
-    state_manager:reduce(event, reducer)
+    state_modifier:reduce(event, reducer)
 
     assert.are.equal(42, captured_state.value)
   end)
@@ -37,13 +37,13 @@ describe("StateManager", function()
     }
 
     local initial_state = State.new()
-    local state_manager = StateManager.new(initial_state)
+    local state_modifier = StateModifier.new(initial_state)
 
-    state_manager:reduce({value = 1}, reducer)
-    state_manager:reduce({value = 2}, reducer)
-    state_manager:reduce({value = 3}, reducer)
+    state_modifier:reduce({value = 1}, reducer)
+    state_modifier:reduce({value = 2}, reducer)
+    state_modifier:reduce({value = 3}, reducer)
 
-    assert.are.equal(6, state_manager.state.sum)
+    assert.are.equal(6, state_modifier.state.sum)
   end)
 
   it("should apply different reducers to the same state", function()
@@ -63,12 +63,12 @@ describe("StateManager", function()
     }
 
     local initial_state = State.new()
-    local state_manager = StateManager.new(initial_state)
+    local state_modifier = StateModifier.new(initial_state)
 
-    state_manager:reduce({value = 42}, reducer1)
-    state_manager:reduce({value = 42}, reducer2)
+    state_modifier:reduce({value = 42}, reducer1)
+    state_modifier:reduce({value = 42}, reducer2)
 
-    assert.are.equal(42, state_manager.state.value1)
-    assert.are.equal(84, state_manager.state.value2)
+    assert.are.equal(42, state_modifier.state.value1)
+    assert.are.equal(84, state_modifier.state.value2)
   end)
 end) 

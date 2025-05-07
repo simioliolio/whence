@@ -1,6 +1,6 @@
-local StateManager = {}
+local StateModifier = {}
 
-function StateManager.new(initial_state)
+function StateModifier.new(initial_state)
   local self = {
     state = initial_state,
     listeners = {
@@ -19,4 +19,4 @@ function StateManager.new(initial_state)
   return self
 end
 
-return StateManager 
+return StateModifier 
