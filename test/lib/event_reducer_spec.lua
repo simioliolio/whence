@@ -1,8 +1,8 @@
 require 'busted'
-local EventReducer = require 'lib.event_reducer'
-local ButtonEvent = require 'lib.button_event'
-local State = require 'lib.state'
-local GridNoteMidiHelperStub = require 'test.utils.grid_note_midi_converter_stub'
+local EventReducer = require 'whence.lib.event_reducer'
+local ButtonEvent = require 'whence.lib.button_event'
+local State = require 'whence.lib.state'
+local GridNoteMidiHelperStub = require 'whence.test.utils.grid_note_midi_converter_stub'
 
 describe("EventReducer", function()
   it("should update the selected page", function()

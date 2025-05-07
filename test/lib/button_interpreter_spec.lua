@@ -1,5 +1,5 @@
 require 'busted'
-local ButtonInterpreter = require 'lib.button_interpreter'
+local ButtonInterpreter = require 'whence.lib.button_interpreter'
 
 describe("ButtonInterpreter", function()
   -- Helper function to create a fresh button interpreter with a listener

@@ -1,11 +1,11 @@
 -- Whence
 
 -- Development notes:
--- norns lib types are only used in this file. Abstractions for grid, clock etc are used
--- under src/ (for unit testing)
+-- norns core lib types are only used in this file. Abstractions for grid, clock etc are used
+-- under lib/ (for unit testing)
 --
 
-require "src.coordinator"
+require "whence.lib.coordinator"
 
 function init()
   local coordinator = Coordinator.new()

@@ -1,5 +1,5 @@
 require 'busted'
-local GridNoteToMidiConverter = require 'lib.grid_note_to_midi_converter'
+local GridNoteToMidiConverter = require 'whence.lib.grid_note_to_midi_converter'
 
 describe("GridNoteToMidiConverter", function()
   it("should convert lowestgrid note to midi note", function()

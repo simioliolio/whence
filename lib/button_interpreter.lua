@@ -1,5 +1,5 @@
 local ButtonInterpreter = {}
-local ButtonEvent = require 'lib.button_event'
+local ButtonEvent = require 'whence.lib.button_event'
 
 ButtonInterpreter.GRID_SIZE = {
   X = 16,

@@ -1,8 +1,8 @@
 require 'busted'
-local LedProvider = require 'lib.led_provider'
-local State = require 'lib.state'
-local LedComparisonHelper = require 'test.utils.led_comparison_helper'
-local ButtonInterpreter = require 'lib.button_interpreter'
+local LedProvider = require 'whence.lib.led_provider'
+local State = require 'whence.lib.state'
+local LedComparisonHelper = require 'whence.test.utils.led_comparison_helper'
+local ButtonInterpreter = require 'whence.lib.button_interpreter'
 
 -- Helper function to check if a specific LED coordinate exists in the array
 local function has_led(leds, x, y)
