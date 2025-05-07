@@ -1,7 +1,7 @@
 require 'busted'
-local EventReducer = require 'src.event_reducer'
-local ButtonEvent = require 'src.button_event'
-local State = require 'src.state'
+local EventReducer = require 'lib.event_reducer'
+local ButtonEvent = require 'lib.button_event'
+local State = require 'lib.state'
 local GridNoteMidiHelperStub = require 'test.utils.grid_note_midi_converter_stub'
 
 describe("EventReducer", function()

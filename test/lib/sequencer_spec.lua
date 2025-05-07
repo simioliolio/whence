@@ -1,5 +1,5 @@
 require 'busted'
-local Sequencer = require 'src.sequencer'
+local Sequencer = require 'lib.sequencer'
 
 describe("Sequencer", function()
   it("should increase position when clocked", function()

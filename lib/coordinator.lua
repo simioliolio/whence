@@ -17,6 +17,8 @@ function Coordinator.new()
   function Coordinator:handle_button(x,y,z)
     print("handling button " .. x .. y .. z)
   end
+
+  return self
 end
 
 return Coordinator

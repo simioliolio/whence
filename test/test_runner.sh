@@ -12,9 +12,24 @@ if [ -z "$(which busted)" ]; then
   exit 1
 fi
 
-cd "${PROJECT_ROOT}" || { echo "${PROJECT_ROOT} not found"; exit 1; }
+# Create a temporary directory for testing
+TEMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TEMP_DIR"' EXIT
 
-# Set LUA_PATH to include project root for module resolution
-export LUA_PATH="./?.lua;./?/init.lua;./?/?.lua;$LUA_PATH"
+# Create the minimal directory structure needed for testing
+mkdir -p "$TEMP_DIR/lib"
+mkdir -p "$TEMP_DIR/test/utils"
 
-busted .
+# Copy only the necessary files
+cp -r "$PROJECT_ROOT/lib"/* "$TEMP_DIR/lib/"
+cp "$PROJECT_ROOT/whence.lua" "$TEMP_DIR/whence.lua"
+cp -r "$PROJECT_ROOT/test/utils"/* "$TEMP_DIR/test/utils/"
+
+# Change to the temporary directory
+cd "$TEMP_DIR" || { echo "Failed to change to temporary directory"; exit 1; }
+
+# Set LUA_PATH to include only our test environment
+export LUA_PATH="./?.lua;./?/init.lua;./?/?.lua"
+
+# Run the tests
+busted "$PROJECT_ROOT/test/lib"

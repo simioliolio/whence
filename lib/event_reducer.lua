@@ -1,5 +1,5 @@
 local EventReducer = {}
-local GridNoteToMidiConverter = require 'src.grid_note_to_midi_converter'
+local GridNoteToMidiConverter = require 'lib.grid_note_to_midi_converter'
 
 -- Helper function to find an element in a table that matches a predicate
 local function table_find(t, predicate)

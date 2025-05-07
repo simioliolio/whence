@@ -1,5 +1,5 @@
 require 'busted'
-local Transport = require 'src.transport'
+local Transport = require 'lib.transport'
 
 describe("Transport", function()
   it("should advance the sequencer if playing", function()
