@@ -5,6 +5,9 @@
 -- under lib/ (for unit testing)
 --
 
+local ButtonInterpreter = require "whence.lib.button_interpreter"
+local EventReducer = require "whence.lib.event_reducer"
+
 local Coordinator = {}
 
 function Coordinator.new()
@@ -13,15 +16,22 @@ function Coordinator.new()
     led_set = function (_,_,_) assert(false, "not set") end,
     led_refresh = function() assert(false, "not set") end,
 
+    -- get externally
     grid_button_handler = function (x,y,z) self:handle_button(x,y,z) end,
+
+    button_interpreter = ButtonInterpreter.new(),
+    event_reducer = EventReducer.new(),
   }
 
   function self:start()
-    print("start called")
+    self.button_interpreter.listeners.on_change = function(event)
+      local new_state = self.event_reducer:reduce(event)
+      -- TODO: Handle new state
+    end
   end
 
   function self:handle_button(x,y,z)
-    print("handling button " .. x .. y .. z)
+    self.button_interpreter:handle_press({x,y,z})
   end
 
   return self
