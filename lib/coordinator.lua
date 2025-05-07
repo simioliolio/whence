@@ -10,11 +10,11 @@ function Coordinator.new()
     grid_button_handler = function (x,y,z) self:handle_button(x,y,z) end,
   }
 
-  function Coordinator:start()
-    -- TODO: Setup
+  function self:start()
+    print("start called")
   end
 
-  function Coordinator:handle_button(x,y,z)
+  function self:handle_button(x,y,z)
     print("handling button " .. x .. y .. z)
   end
 
@@ -22,4 +22,3 @@ function Coordinator.new()
 end
 
 return Coordinator
-

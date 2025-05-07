@@ -5,7 +5,7 @@
 -- under lib/ (for unit testing)
 --
 
-require "whence.lib.coordinator"
+local Coordinator = require "whence.lib.coordinator"
 
 function init()
   local coordinator = Coordinator.new()
@@ -13,5 +13,5 @@ function init()
   g.key = coordinator.grid_button_handler
   coordinator.led_set = g.led
   coordinator.led_refresh = g.refresh
-  coordinator.start()
+  coordinator:start()
 end
