@@ -7,6 +7,8 @@
 
 local ButtonInterpreter = require "whence.lib.button_interpreter"
 local EventReducer = require "whence.lib.event_reducer"
+local State = require "whence.lib.state"
+local StateManager = require "whence.lib.state_manager"
 
 local Coordinator = {}
 
@@ -21,12 +23,16 @@ function Coordinator.new()
 
     button_interpreter = ButtonInterpreter.new(),
     event_reducer = EventReducer.new(),
+    state_manager = StateManager.new(State.new()),
   }
 
   function self:start()
     self.button_interpreter.listeners.on_change = function(event)
-      local new_state = self.event_reducer:reduce(event)
-      -- TODO: Handle new state
+      self.state_manager:reduce(event, self.event_reducer)
+    end
+
+    self.state_manager.listeners.on_state_change = function(new_state)
+      -- TODO: Update LEDs based on new state
     end
   end
 
